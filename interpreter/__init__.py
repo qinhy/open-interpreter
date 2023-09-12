@@ -1,10 +1,13 @@
 from .interpreter import Interpreter
+from .code_block import *
+from .message_block import *
+from .code_interpreter import *
 import sys
 
 # This is done so when users `import interpreter`,
 # they get an instance of interpreter:
 
-sys.modules["interpreter"] = Interpreter()
+# sys.modules["interpreter"] = Interpreter()
 
 # **This is a controversial thing to do,**
 # because perhaps modules ought to behave like modules.
