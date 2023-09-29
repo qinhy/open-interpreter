@@ -2,14 +2,19 @@ import sys
 from ..subprocess_code_interpreter import SubprocessCodeInterpreter
 import ast
 import re
+import platform
 
 class Python(SubprocessCodeInterpreter):
     file_extension = "py"
     proper_name = "Python"
 
-    def __init__(self):
+    def __init__(self,user=''):
         super().__init__()
         self.start_cmd = sys.executable + " -i -q -u"
+        self.user = user
+        if len(self.user>0):            
+            if platform.system() != 'Windows':
+                self.start_cmd = f'sudo -u {self.user}' + self.start_cmd
         
     def preprocess_code(self, code):
         return preprocess_python(code)

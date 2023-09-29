@@ -1,13 +1,18 @@
 from ..subprocess_code_interpreter import SubprocessCodeInterpreter
 import re
+import platform
 
 class JavaScript(SubprocessCodeInterpreter):
     file_extension = "js"
     proper_name = "JavaScript"
 
-    def __init__(self):
+    def __init__(self,user=''):
         super().__init__()
-        self.start_cmd = "node -i"
+        self.start_cmd = "node -i"        
+        self.user = user
+        if len(self.user>0):            
+            if platform.system() != 'Windows':
+                self.start_cmd = f'sudo -u {self.user}' + self.start_cmd
         
     def preprocess_code(self, code):
         return preprocess_javascript(code)

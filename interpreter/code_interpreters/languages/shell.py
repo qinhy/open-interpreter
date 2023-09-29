@@ -7,14 +7,20 @@ class Shell(SubprocessCodeInterpreter):
     file_extension = "sh"
     proper_name = "Shell"
 
-    def __init__(self):
-        super().__init__()
 
+    def __init__(self,user=''):
+        super().__init__()
         # Determine the start command based on the platform
         if platform.system() == 'Windows':
             self.start_cmd = 'cmd.exe'
         else:
             self.start_cmd = os.environ.get('SHELL', 'bash')
+        
+        self.user = user
+        if len(self.user>0):            
+            if platform.system() != 'Windows':
+                self.start_cmd = f'sudo -u {self.user}' + self.start_cmd
+            
 
     def preprocess_code(self, code):
         return preprocess_shell(code)
