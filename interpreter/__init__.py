@@ -1,7 +1,4 @@
-from .interpreter import Interpreter
-from .code_block import *
-from .message_block import *
-from .code_interpreter import *
+from .core.core import Interpreter
 import sys
 
 # This is done so when users `import interpreter`,

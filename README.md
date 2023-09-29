@@ -2,11 +2,12 @@
 
 <p align="center">
     <a href="https://discord.gg/6p3fD6rBVm">
-        <img alt="Discord" src="https://img.shields.io/discord/1146610656779440188?logo=discord&style=flat&logoColor=white">
+        <img alt="Discord" src="https://img.shields.io/discord/1146610656779440188?logo=discord&style=flat&logoColor=white"/>
     </a>
-    <a href="README_JA.md"><img src="https://img.shields.io/badge/ドキュメント-日本語-white.svg" alt="JA doc"></a>
-    <a href="README_ZH.md"><img src="https://img.shields.io/badge/文档-中文版-white.svg" alt="ZH doc"></a>
-    <img src="https://img.shields.io/static/v1?label=license&message=MIT&color=white&style=flat" alt="License">
+    <a href="README_JA.md"><img src="https://img.shields.io/badge/ドキュメント-日本語-white.svg" alt="JA doc"/></a>
+    <a href="README_ZH.md"><img src="https://img.shields.io/badge/文档-中文版-white.svg" alt="ZH doc"/></a>
+    <a href="README_IN.md"><img src="https://img.shields.io/badge/Document-Hindi-white.svg" alt="IN doc"/></a>
+    <img src="https://img.shields.io/static/v1?label=license&message=MIT&color=white&style=flat" alt="License"/>
     <br><br>
     <b>Let language models run code on your computer.</b><br>
     An open-source, locally running implementation of OpenAI's Code Interpreter.<br>
@@ -33,10 +34,10 @@ interpreter
 
 This provides a natural-language interface to your computer's general-purpose capabilities:
 
--   Create and edit photos, videos, PDFs, etc.
--   Control a Chrome browser to perform research
--   Plot, clean, and analyze large datasets
--   ...etc.
+- Create and edit photos, videos, PDFs, etc.
+- Control a Chrome browser to perform research
+- Plot, clean, and analyze large datasets
+- ...etc.
 
 **⚠️ Note: You'll be asked to approve code before it's run.**
 
@@ -49,6 +50,10 @@ https://github.com/KillianLucas/open-interpreter/assets/63927363/37152071-680d-4
 #### An interactive demo is also available on Google Colab:
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1WKmRXZgsErej2xUriKzxrEAXdxMSgWbb?usp=sharing)
+
+#### Along with an example implementation of a voice interface (inspired by _Her_):
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1NojYGHDgxH6Y1G1oxThEBBb2AtyODBIK)
 
 ## Quick Start
 
@@ -79,10 +84,10 @@ OpenAI's release of [Code Interpreter](https://openai.com/blog/chatgpt-plugins#c
 
 However, OpenAI's service is hosted, closed-source, and heavily restricted:
 
--   No internet access.
--   [Limited set of pre-installed packages](https://wfhbrian.com/mastering-chatgpts-code-interpreter-list-of-python-packages/).
--   100 MB maximum upload, 120.0 second runtime limit.
--   State is cleared (along with any generated files or links) when the environment dies.
+- No internet access.
+- [Limited set of pre-installed packages](https://wfhbrian.com/mastering-chatgpts-code-interpreter-list-of-python-packages/).
+- 100 MB maximum upload, 120.0 second runtime limit.
+- State is cleared (along with any generated files or links) when the environment dies.
 
 ---
 
@@ -91,6 +96,15 @@ Open Interpreter overcomes these limitations by running on your local environmen
 This combines the power of GPT-4's Code Interpreter with the flexibility of your local development environment.
 
 ## Commands
+
+**Update:** The Generator Update (0.1.5) introduced streaming:
+
+```python
+message = "What operating system are we on?"
+
+for chunk in interpreter.chat(message, display=False, stream=True):
+  print(chunk)
+```
 
 ### Interactive Chat
 
@@ -104,6 +118,15 @@ Or `interpreter.chat()` from a .py file:
 
 ```python
 interpreter.chat()
+```
+
+**You can also stream each chunk:**
+
+```python
+message = "What operating system are we on?"
+
+for chunk in interpreter.chat(message, display=False, stream=True):
+  print(chunk)
 ```
 
 ### Programmatic Chat
@@ -130,13 +153,13 @@ interpreter.reset()
 
 ### Save and Restore Chats
 
-`interpreter.chat()` returns a List of messages when return_messages=True, which can be used to resume a conversation with `interpreter.load(messages)`:
+`interpreter.chat()` returns a List of messages, which can be used to resume a conversation with `interpreter.messages = messages`:
 
 ```python
-messages = interpreter.chat("My name is Killian.", return_messages=True) # Save messages to 'messages'
+messages = interpreter.chat("My name is Killian.") # Save messages to 'messages'
 interpreter.reset() # Reset interpreter ("Killian" will be forgotten)
 
-interpreter.load(messages) # Resume chat from 'messages' ("Killian" will be remembered)
+interpreter.messages = messages # Resume chat from 'messages' ("Killian" will be remembered)
 ```
 
 ### Customize System Message
@@ -150,23 +173,29 @@ Run shell commands with -y so the user doesn't have to confirm them.
 print(interpreter.system_message)
 ```
 
-### Change the Model
+### Change your Language Model
 
-For `gpt-3.5-turbo`, use fast mode:
+Open Interpreter uses [LiteLLM](https://docs.litellm.ai/docs/providers/) to connect to language models.
+
+You can change the model by setting the model parameter:
 
 ```shell
-interpreter --fast
+interpreter --model gpt-3.5-turbo
+interpreter --model claude-2
+interpreter --model command-nightly
 ```
 
-In Python, you will need to set the model manually:
+In Python, set the model on the object:
 
 ```python
 interpreter.model = "gpt-3.5-turbo"
 ```
 
+[Find the appropriate "model" string for your language model here.](https://docs.litellm.ai/docs/providers/)
+
 ### Running Open Interpreter locally
 
-ⓘ **Issues running locally?** Read our new [GPU setup guide](/docs/GPU.md) and [Windows setup guide](/docs/WINDOWS.md).
+ⓘ **Issues running locally?** Read our new [GPU setup guide](./docs/GPU.md) and [Windows setup guide](./docs/WINDOWS.md).
 
 You can run `interpreter` in local mode from the command line to use `Code Llama`:
 
@@ -174,10 +203,10 @@ You can run `interpreter` in local mode from the command line to use `Code Llama
 interpreter --local
 ```
 
-Or run any Hugging Face model **locally** by using its repo ID (e.g. "tiiuae/falcon-180B"):
+Or run any Hugging Face model **locally** by running `--local` in conjunction with a repo ID (e.g. "tiiuae/falcon-180B"):
 
 ```shell
-interpreter --model tiiuae/falcon-180B
+interpreter --local --model tiiuae/falcon-180B
 ```
 
 #### Local model params
@@ -190,25 +219,6 @@ Smaller context windows will use less RAM, so we recommend trying a shorter wind
 interpreter --max_tokens 2000 --context_window 16000
 ```
 
-### Azure Support
-
-To connect to an Azure deployment, the `--use-azure` flag will walk you through setting this up:
-
-```shell
-interpreter --use-azure
-```
-
-In Python, set the following variables:
-
-```
-interpreter.use_azure = True
-interpreter.api_key = "your_openai_api_key"
-interpreter.azure_api_base = "your_azure_api_base"
-interpreter.azure_api_version = "your_azure_api_version"
-interpreter.azure_deployment_name = "your_azure_deployment_name"
-interpreter.azure_api_type = "azure"
-```
-
 ### Debug mode
 
 To help contributors inspect Open Interpreter, `--debug` mode is highly verbose.
@@ -218,24 +228,37 @@ You can activate debug mode by using it's flag (`interpreter --debug`), or mid-c
 ```shell
 $ interpreter
 ...
-> %debug # <- Turns on debug mode
+> %debug true <- Turns on debug mode
+
+> %debug false <- Turns off debug mode
 ```
 
-### Configuration with .env
+### Interactive Mode Commands
 
-Open Interpreter allows you to set default behaviors using a .env file. This provides a flexible way to configure the interpreter without changing command-line arguments every time.
+In the interactive mode, you can use the below commands to enhance your experience. Here's a list of available commands:
 
-Here's a sample .env configuration:
+**Available Commands:**  
+ • `%debug [true/false]`: Toggle debug mode. Without arguments or with 'true', it
+enters debug mode. With 'false', it exits debug mode.  
+ • `%reset`: Resets the current session.  
+ • `%undo`: Remove previous messages and its response from the message history.  
+ • `%save_message [path]`: Saves messages to a specified JSON path. If no path is
+provided, it defaults to 'messages.json'.  
+ • `%load_message [path]`: Loads messages from a specified JSON path. If no path  
+ is provided, it defaults to 'messages.json'.  
+ • `%help`: Show the help message.
+
+### Configuration
+
+Open Interpreter allows you to set default behaviors using a `config.yaml` file.
+
+This provides a flexible way to configure the interpreter without changing command-line arguments every time.
+
+Run the following command to open the configuration file:
 
 ```
-INTERPRETER_CLI_AUTO_RUN=False
-INTERPRETER_CLI_FAST_MODE=False
-INTERPRETER_CLI_LOCAL_RUN=False
-INTERPRETER_CLI_DEBUG=False
-INTERPRETER_CLI_USE_AZURE=False
+interpreter --config
 ```
-
-You can modify these values in the .env file to change the default behavior of the Open Interpreter.
 
 ## Safety Notice
 
@@ -245,9 +268,9 @@ Since generated code is executed in your local environment, it can interact with
 
 You can run `interpreter -y` or set `interpreter.auto_run = True` to bypass this confirmation, in which case:
 
--   Be cautious when requesting commands that modify files or system settings.
--   Watch Open Interpreter like a self-driving car, and be prepared to end the process by closing your terminal.
--   Consider running Open Interpreter in a restricted environment like Google Colab or Replit. These environments are more isolated, reducing the risks associated with executing arbitrary code.
+- Be cautious when requesting commands that modify files or system settings.
+- Watch Open Interpreter like a self-driving car, and be prepared to end the process by closing your terminal.
+- Consider running Open Interpreter in a restricted environment like Google Colab or Replit. These environments are more isolated, reducing the risks associated with executing arbitrary code.
 
 ## How Does it Work?
 
@@ -259,7 +282,7 @@ We then stream the model's messages, code, and your system's outputs to the term
 
 Thank you for your interest in contributing! We welcome involvement from the community.
 
-Please see our [Contributing Guidelines](/docs/contributing.md) for more details on how to get involved.
+Please see our [Contributing Guidelines](./CONTRIBUTING.md) for more details on how to get involved.
 
 ## License
 
