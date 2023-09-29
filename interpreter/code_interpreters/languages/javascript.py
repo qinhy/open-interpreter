@@ -12,7 +12,7 @@ class JavaScript(SubprocessCodeInterpreter):
         self.user = user
         if len(self.user)>0:            
             if platform.system() != 'Windows':
-                self.start_cmd = f'sudo -u {self.user}' + self.start_cmd
+                self.start_cmd = f'sudo -u {self.user} ' + self.start_cmd
         
     def preprocess_code(self, code):
         return preprocess_javascript(code)
