@@ -12,7 +12,7 @@ class Python(SubprocessCodeInterpreter):
         super().__init__()
         self.start_cmd = sys.executable + " -i -q -u"
         self.user = user
-        if len(self.user>0):            
+        if len(self.user)>0:            
             if platform.system() != 'Windows':
                 self.start_cmd = f'sudo -u {self.user}' + self.start_cmd
         
